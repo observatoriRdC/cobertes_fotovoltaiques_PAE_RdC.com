@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/filter.css">
+<link rel="stylesheet" href="css/nouislider.min.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title>Cobertes fotovoltaiques de les empreses ubicades als polígons industrials de l'Eix de la Riera de Caldes</title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/tailDT.js"></script>
+<script src="js/nouislider.min.js"></script>
+<script src="js/wNumb.js"></script>
+        <script src="data/Lmitsmunicipals_0.js"></script>
+        <script src="data/Polgonsindustrials_1.js"></script>
+        <script src="data/Empresesambcobertafotovoltaica_2.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        })
+var GoogleBase =L.tileLayer('http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}');
+GoogleBase.addTo(map);
+   var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://www.rieradecaldes.com/observatori.html">ObservatoriRdC</a> &middot;<a href="https://www.rieradecaldes.com/transicioenergeticardc.html">Transició energètica </a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+            if (bounds_group.getLayers().length) {
+                map.fitBounds(bounds_group.getBounds());
+            }
+        }
+        function pop_Lmitsmunicipals_0(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CODIMUNI'] !== null ? autolinker.link(feature.properties['CODIMUNI'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">NOMMUNI</th>\
+                        <td>' + (feature.properties['NOMMUNI'] !== null ? autolinker.link(feature.properties['NOMMUNI'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Lmitsmunicipals_0_0() {
+            return {
+                pane: 'pane_Lmitsmunicipals_0',
+                opacity: 1,
+                color: 'rgba(255,158,23,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(141,90,153,0.0)',
+                interactive: false,
+            }
+        }
+        map.createPane('pane_Lmitsmunicipals_0');
+        map.getPane('pane_Lmitsmunicipals_0').style.zIndex = 400;
+        map.getPane('pane_Lmitsmunicipals_0').style['mix-blend-mode'] = 'normal';
+        var layer_Lmitsmunicipals_0 = new L.geoJson(json_Lmitsmunicipals_0, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_Lmitsmunicipals_0',
+            layerName: 'layer_Lmitsmunicipals_0',
+            pane: 'pane_Lmitsmunicipals_0',
+            onEachFeature: pop_Lmitsmunicipals_0,
+            style: style_Lmitsmunicipals_0_0,
+        });
+        bounds_group.addLayer(layer_Lmitsmunicipals_0);
+        map.addLayer(layer_Lmitsmunicipals_0);
+        function pop_Polgonsindustrials_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">NomPolInd</th>\
+                        <td>' + (feature.properties['NomPolInd'] !== null ? autolinker.link(feature.properties['NomPolInd'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Ha</th>\
+                        <td>' + (feature.properties['Ha'] !== null ? autolinker.link(feature.properties['Ha'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">KM2</th>\
+                        <td>' + (feature.properties['KM2'] !== null ? autolinker.link(feature.properties['KM2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Polgonsindustrials_1_0() {
+            return {
+                pane: 'pane_Polgonsindustrials_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 0.2,
+                fillColor: 'rgba(31,120,180,1.0)',
+                interactive: false,
+            }
+        }
+        map.createPane('pane_Polgonsindustrials_1');
+        map.getPane('pane_Polgonsindustrials_1').style.zIndex = 401;
+        map.getPane('pane_Polgonsindustrials_1').style['mix-blend-mode'] = 'normal';
+        var layer_Polgonsindustrials_1 = new L.geoJson(json_Polgonsindustrials_1, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_Polgonsindustrials_1',
+            layerName: 'layer_Polgonsindustrials_1',
+            pane: 'pane_Polgonsindustrials_1',
+            onEachFeature: pop_Polgonsindustrials_1,
+            style: style_Polgonsindustrials_1_0,
+        });
+        bounds_group.addLayer(layer_Polgonsindustrials_1);
+        map.addLayer(layer_Polgonsindustrials_1);
+        function pop_Empresesambcobertafotovoltaica_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">NOM_FISCAL</th>\
+                        <td>' + (feature.properties['NOM_FISCAL'] !== null ? autolinker.link(feature.properties['NOM_FISCAL'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">NCOMERCIAL</th>\
+                        <td>' + (feature.properties['NCOMERCIAL'] !== null ? autolinker.link(feature.properties['NCOMERCIAL'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">N_PANELLS</th>\
+                        <td>' + (feature.properties['N_PANELLS'] !== null ? autolinker.link(feature.properties['N_PANELLS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">SUP_M2</th>\
+                        <td>' + (feature.properties['SUP_M2'] !== null ? autolinker.link(feature.properties['SUP_M2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">POT_KWP</th>\
+                        <td>' + (feature.properties['POT_KWP'] !== null ? autolinker.link(feature.properties['POT_KWP'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">PROD_KWH</th>\
+                        <td>' + (feature.properties['PROD_KWH'] !== null ? autolinker.link(feature.properties['PROD_KWH'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">TIP_PANELL</th>\
+                        <td>' + (feature.properties['TIP_PANELL'] !== null ? autolinker.link(feature.properties['TIP_PANELL'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">P_CONSUMIT</th>\
+                        <td>' + (feature.properties['P_CONSUMIT'] !== null ? autolinker.link(feature.properties['P_CONSUMIT'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">INT_CE</th>\
+                        <td>' + (feature.properties['INT_CE'] !== null ? autolinker.link(feature.properties['INT_CE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">EXCEDENT</th>\
+                        <td>' + (feature.properties['EXCEDENT'] !== null ? autolinker.link(feature.properties['EXCEDENT'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DIRECCIO</th>\
+                        <td>' + (feature.properties['DIRECCIO'] !== null ? autolinker.link(feature.properties['DIRECCIO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">MUNICIPI</th>\
+                        <td>' + (feature.properties['MUNICIPI'] !== null ? autolinker.link(feature.properties['MUNICIPI'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">PAE</th>\
+                        <td>' + (feature.properties['PAE'] !== null ? autolinker.link(feature.properties['PAE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">OBSERVACIO</th>\
+                        <td>' + (feature.properties['OBSERVACIO'] !== null ? autolinker.link(feature.properties['OBSERVACIO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">MAPS</th>\
+                        <td>' + (feature.properties['MAPS'] !== null ? autolinker.link(feature.properties['MAPS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DESC_ACT</th>\
+                        <td>' + (feature.properties['DESC_ACT'] !== null ? autolinker.link(feature.properties['DESC_ACT'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">SECTOR</th>\
+                        <td>' + (feature.properties['SECTOR'] !== null ? autolinker.link(feature.properties['SECTOR'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Empresesambcobertafotovoltaica_2_0() {
+            return {
+                pane: 'pane_Empresesambcobertafotovoltaica_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 0.7,
+                fillColor: 'rgba(255,0,0,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Empresesambcobertafotovoltaica_2');
+        map.getPane('pane_Empresesambcobertafotovoltaica_2').style.zIndex = 402;
+        map.getPane('pane_Empresesambcobertafotovoltaica_2').style['mix-blend-mode'] = 'normal';
+        var layer_Empresesambcobertafotovoltaica_2 = new L.geoJson(json_Empresesambcobertafotovoltaica_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Empresesambcobertafotovoltaica_2',
+            layerName: 'layer_Empresesambcobertafotovoltaica_2',
+            pane: 'pane_Empresesambcobertafotovoltaica_2',
+            onEachFeature: pop_Empresesambcobertafotovoltaica_2,
+            style: style_Empresesambcobertafotovoltaica_2_0,
+        });
+        bounds_group.addLayer(layer_Empresesambcobertafotovoltaica_2);
+        map.addLayer(layer_Empresesambcobertafotovoltaica_2);
+            var title = new L.Control();
+            title.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'info');
+                this.update();
+                return this._div;
+            };
+            title.update = function () {
+                this._div.innerHTML = '<h2>Cobertes fotovoltaiques de les empreses ubicades als polígons industrials de l\'Eix de la Riera de Caldes</h2>';
+            };
+            title.addTo(map);
+            var abstract = new L.Control({'position':'topleft'});
+            abstract.onAdd = function (map) {
+                this._div = L.DomUtil.create('div',
+                'leaflet-control abstract');
+                this._div.id = 'abstract'
+                    this._div.setAttribute("onmouseenter", "abstract.show()");
+                    this._div.setAttribute("onmouseleave", "abstract.hide()");
+                    this.hide();
+                    return this._div;
+                };
+                abstract.hide = function () {
+                    this._div.classList.remove("abstractUncollapsed");
+                    this._div.classList.add("abstract");
+                    this._div.innerHTML = 'i'
+                }
+                abstract.show = function () {
+                    this._div.classList.remove("abstract");
+                    this._div.classList.add("abstractUncollapsed");
+                    this._div.innerHTML = 'Les dades han estat recollides pels tècnics de Transició Energètica de Desenvolupament Local i Comerç, de l\'Ajuntament de Santa Perpètua de Mogoda.<br />El tractament de les dades i l\'elaboració del visor cartogràfic ha estat a càrrec del tècnic de l\'Observatori de la Riera de Caldes.<br />Any 2023';
+            };
+            abstract.addTo(map);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'<img src="legend/Empresesambcobertafotovoltaica_2.png" /> Empreses amb coberta fotovoltaica': layer_Empresesambcobertafotovoltaica_2,'<img src="legend/Polgonsindustrials_1.png" /> Polígons industrials': layer_Polgonsindustrials_1,'<img src="legend/Lmitsmunicipals_0.png" /> Límits municipals': layer_Lmitsmunicipals_0,},{collapsed:false}).addTo(map);
+        setBounds();
+        var mapDiv = document.getElementById('map');
+        var row = document.createElement('div');
+        row.className="row";
+        row.id="all";
+        row.style.height = "100%";
+        var col1 = document.createElement('div');
+        col1.className="col9";
+        col1.id = "mapWindow";
+        col1.style.height = "99%";
+        col1.style.width = "80%";
+        col1.style.display = "inline-block";
+        var col2 = document.createElement('div');
+        col2.className="col3";
+        col2.id = "menu";
+        col2.style.display = "inline-block";
+        mapDiv.parentNode.insertBefore(row, mapDiv);
+        document.getElementById("all").appendChild(col1);
+        document.getElementById("all").appendChild(col2);
+        col1.appendChild(mapDiv)
+        var Filters = {"N_PANELLS": "int","PROD_KWH": "real","SUP_M2": "real","SECTOR": "str"};
+        function filterFunc() {
+          map.eachLayer(function(lyr){
+          if ("options" in lyr && "dataVar" in lyr["options"]){
+            features = this[lyr["options"]["dataVar"]].features.slice(0);
+            try{
+              for (key in Filters){
+                keyS = key.replace(/[^a-zA-Z0-9_]/g, "")
+                if (Filters[key] == "str" || Filters[key] == "bool"){
+                  var selection = [];
+                  var options = document.getElementById("sel_" + keyS).options
+                  for (var i=0; i < options.length; i++) {
+                    if (options[i].selected) selection.push(options[i].value);
+                  }
+                    try{
+                      if (key in features[0].properties){
+                        for (i = features.length - 1;
+                          i >= 0; --i){
+                          if (selection.indexOf(
+                          features[i].properties[key])<0
+                          && selection.length>0) {
+                          features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                  }
+                }
+                if (Filters[key] == "int"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (parseInt(features[i].properties[key])
+                          < sliderVals[0]
+                          || parseInt(features[i].properties[key])
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "real"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (features[i].properties[key]
+                          < sliderVals[0]
+                          || features[i].properties[key]
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "date"
+                  || Filters[key] == "datetime"
+                  || Filters[key] == "time"){
+                  try{
+                    if (key in features[0].properties){
+                      HTMLkey = key.replace(/[&\/\\#,+()$~%.'":*?<>{} ]/g, '');
+                      startdate = document.getElementById("dat_" +
+                        HTMLkey + "_date1").value.replace(" ", "T");
+                      enddate = document.getElementById("dat_" +
+                        HTMLkey + "_date2").value.replace(" ", "T");
+                      for (i = features.length - 1; i >= 0; --i){
+                        if (features[i].properties[key] < startdate
+                          || features[i].properties[key] > enddate){
+                          features.splice(i,1);
+                        }
+                      }
+                    }
+                  } catch(err){
+                  }
+                }
+              }
+            } catch(err){
+            }
+          this[lyr["options"]["layerName"]].clearLayers();
+          this[lyr["options"]["layerName"]].addData(features);
+          }
+          })
+        }
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_N_PANELLS = document.createElement("div");
+            div_N_PANELLS.id = "div_N_PANELLS";
+            div_N_PANELLS.className = "slider";
+            document.getElementById("menu").appendChild(div_N_PANELLS);
+            var lab_N_PANELLS = document.createElement('div');
+            lab_N_PANELLS.innerHTML  = 'Nombre de panells: <span id="val_N_PANELLS"></span>';
+            lab_N_PANELLS.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_N_PANELLS);
+            var reset_N_PANELLS = document.createElement('div');
+            reset_N_PANELLS.innerHTML = 'Esborrar filtre';
+            reset_N_PANELLS.className = 'filterlabel';
+            lab_N_PANELLS.className = 'filterlabel';
+            reset_N_PANELLS.onclick = function() {
+                sel_N_PANELLS.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_N_PANELLS);
+            var sel_N_PANELLS = document.getElementById('div_N_PANELLS');
+            noUiSlider.create(sel_N_PANELLS, {
+                connect: true,
+                start: [0, 4000],
+                step: 1,
+                format: wNumb({
+                    decimals: 0,
+                    }),
+                range: {
+                min: 0,
+                max: 4000
+                }
+            });
+            sel_N_PANELLS.noUiSlider.on('update', function (values) {
+            filterVals =[];
+            for (value in values){
+            filterVals.push(parseInt(value))
+            }
+            val_N_PANELLS = document.getElementById('val_N_PANELLS');
+            val_N_PANELLS.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_PROD_KWH = document.createElement("div");
+            div_PROD_KWH.id = "div_PROD_KWH";
+            div_PROD_KWH.className = "slider";
+            document.getElementById("menu").appendChild(div_PROD_KWH);
+            var lab_PROD_KWH = document.createElement('div');
+            lab_PROD_KWH.innerHTML  = 'Prod. energia (en KWH): <span id="val_PROD_KWH"></span>';
+            lab_PROD_KWH.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_PROD_KWH);
+            var reset_PROD_KWH = document.createElement('div');
+            reset_PROD_KWH.innerHTML = 'Esborrar filtre';
+            reset_PROD_KWH.className = 'filterlabel';
+            lab_PROD_KWH.className = 'filterlabel';
+            reset_PROD_KWH.onclick = function() {
+                sel_PROD_KWH.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_PROD_KWH);
+            var sel_PROD_KWH = document.getElementById('div_PROD_KWH');
+            noUiSlider.create(sel_PROD_KWH, {
+                connect: true,
+                start: [0, 936748.0],
+                range: {
+                min: 0,
+                max: 936748.0
+                }
+            });
+            sel_PROD_KWH.noUiSlider.on('update', function (values) {
+            val_PROD_KWH = document.getElementById('val_PROD_KWH');
+            val_PROD_KWH.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_SUP_M2 = document.createElement("div");
+            div_SUP_M2.id = "div_SUP_M2";
+            div_SUP_M2.className = "slider";
+            document.getElementById("menu").appendChild(div_SUP_M2);
+            var lab_SUP_M2 = document.createElement('div');
+            lab_SUP_M2.innerHTML  = 'Coberta fotovoltaica (en m2): <span id="val_SUP_M2"></span>';
+            lab_SUP_M2.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_SUP_M2);
+            var reset_SUP_M2 = document.createElement('div');
+            reset_SUP_M2.innerHTML = 'Esborrar filtre';
+            reset_SUP_M2.className = 'filterlabel';
+            lab_SUP_M2.className = 'filterlabel';
+            reset_SUP_M2.onclick = function() {
+                sel_SUP_M2.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_SUP_M2);
+            var sel_SUP_M2 = document.getElementById('div_SUP_M2');
+            noUiSlider.create(sel_SUP_M2, {
+                connect: true,
+                start: [0, 25000.0],
+                range: {
+                min: 0,
+                max: 25000.0
+                }
+            });
+            sel_SUP_M2.noUiSlider.on('update', function (values) {
+            val_SUP_M2 = document.getElementById('val_SUP_M2');
+            val_SUP_M2.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_SECTOR = document.createElement('div');
+            div_SECTOR.id = "div_SECTOR";
+            div_SECTOR.className= "filterselect";
+            document.getElementById("menu").appendChild(div_SECTOR);
+            sel_SECTOR = document.createElement('select');
+            sel_SECTOR.multiple = true;
+            sel_SECTOR.size = 9;
+            sel_SECTOR.id = "sel_SECTOR";
+            var SECTOR_options_str = "<option value='' unselected>Cap selecció</option>";
+            sel_SECTOR.onchange = function(){filterFunc()};
+            SECTOR_options_str  += '<option value="Comerç a l&apos;engròs i intermediaris del comerç">Comerç a l&apos;engròs i intermediaris del comerç</option>';
+            SECTOR_options_str  += '<option value="Comerç al detall">Comerç al detall</option>';
+            SECTOR_options_str  += '<option value="Construcció i activitats immobiliàries">Construcció i activitats immobiliàries</option>';
+            SECTOR_options_str  += '<option value="Energia, aigua i gestió de residus">Energia, aigua i gestió de residus</option>';
+            SECTOR_options_str  += '<option value="Hostaleria i Restauració">Hostaleria i Restauració</option>';
+            SECTOR_options_str  += '<option value="Indústria">Indústria</option>';
+            SECTOR_options_str  += '<option value="Logística i transport">Logística i transport</option>';
+            SECTOR_options_str  += '<option value="Serveis avançats, serveis a les empreses i activitats professionals">Serveis avançats, serveis a les empreses i activitats professionals</option>';
+            sel_SECTOR.innerHTML = SECTOR_options_str;
+            div_SECTOR.appendChild(sel_SECTOR);
+            var lab_SECTOR = document.createElement('div');
+            lab_SECTOR.innerHTML = 'Sector activitat';
+            lab_SECTOR.className = 'filterlabel';
+            div_SECTOR.appendChild(lab_SECTOR);
+            var reset_SECTOR = document.createElement('div');
+            reset_SECTOR.innerHTML = 'Esborrar filtre';
+            reset_SECTOR.className = 'filterlabel';
+            reset_SECTOR.onclick = function() {
+                var options = document.getElementById("sel_SECTOR").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_SECTOR.appendChild(reset_SECTOR);
+        </script>
+    </body>
+</html>
